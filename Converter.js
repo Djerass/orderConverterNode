@@ -9,22 +9,22 @@ class Converter {
     changeFolder(newFolder) {
         this.folder = newFolder;
     }
+
     _start() {
         this.getListOfFiles().then((files) => {
-            return this._getFilesToConvert(files);
-        }).then((files)=>{
-            for(let file of files){
-                try {
-                    this._convert(file);
+                return this._getFilesToConvert(files);
+            }).then((files) => {
+                for (let file of files) {
+                    try {
+                        this._convert(file);
+                    } catch (e) {
+                        console.log(e);
+                    }
                 }
-                catch (e){
-                    console.log(e);
-                }
-            }
-        })
-        .catch((err) => {
-            console.log(err)
-        });
+            })
+            .catch((err) => {
+                console.log(err)
+            });
     }
 
     getListOfFiles() {
@@ -39,7 +39,7 @@ class Converter {
         });
     }
     _getFilesToConvert(allFiles) {
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             const filesToConvert = [];
             for (let file of allFiles) {
                 if (this._needToConvert(file, allFiles)) {
@@ -72,7 +72,7 @@ class Converter {
     _isAlreadyConverted(file, allFiles) {
         let flag = false;
         for (let fl of allFiles) {
-            if (fl !== file && fl.endsWith(file)) {
+            if (fl !== file && !fl.startsWith('~$') && fl.endsWith(file)) {
                 flag = true;
             }
         }
@@ -80,10 +80,9 @@ class Converter {
     }
 
     _convert(file) {
-        const workbook = XLSX.readFile(this.folder+'/'+file);
+        const workbook = XLSX.readFile(this.folder + '/' + file);
         const products = [];
         for (let sheetName of workbook.SheetNames) {
-            console.log(sheetName);
             // Define start position = 20 and exitCounter = 0
             // Start iterations
             // for each iteration
@@ -120,23 +119,24 @@ class Converter {
                 position++;
             }
         }
-        
+
         this.write_file(file, products);
 
     }
 
-    write_file(file, data){
-        
+    
+    write_file(file, data) {
         const wb = XLSX.utils.book_new();
         wb.SheetNames.push("result");
         const ws = XLSX.utils.aoa_to_sheet(data);
         wb.Sheets["result"] = ws;
-        const resultFileName = this.folder+ '/'+'result'+ file;
+        const resultFileName = this.folder + '/' + 'result' + file;
         XLSX.writeFile(wb, resultFileName);
     }
 
     startTimer() {
         this.interval = setInterval(() => {
+            console.log(new Date().toString());
             this._start();
         }, 3000);
     }
@@ -144,6 +144,3 @@ class Converter {
         clearInterval(this.interval);
     }
 }
-
-const converter = new Converter('/home/azariah/Desktop/xls');
-converter.startTimer();
