@@ -150,3 +150,5 @@ class Converter {
         clearInterval(this.interval);
     }
 }
+
+module.exports = {Converter};

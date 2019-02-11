@@ -1,46 +1,26 @@
-if (typeof require !== 'undefined') XLSX = require('xlsx');
-const workbook = XLSX.readFile('ИП Нагоричный_12.02.2019.xls');
-const products = [];
-for (let sheetName of workbook.SheetNames) {
-    // Define start position = 20 and exitCounter = 0
-    // Start iterations
-    // for each iteration
-    // if cell of article is empty - exitCounter is increment on 1 -
-    // if exitCounter === 4 - break iterations move to next page
-    // else if exitCounter < 4 move to next row
-    // if cell of article is not empty - exitCounter become 0
-    // if cell of number is empty move to next row else save
-    const sheet = workbook.Sheets[sheetName];
-    let position = 20;
-    let exitCounter = 0;
-    while (true) {
-        const articleCell = sheet[`B${position}`];
-        const nameCell = sheet[`A${position}`];
-        const numberCell = sheet[`E${position}`];
-        if (articleCell) {
-            exitCounter = 0;
-            if (numberCell) {
-                const object = [
-                    nameCell.v,
-                    articleCell.v,
-                    '',
-                    '',
-                    numberCell.v
-                ];
-                products.push(object);
-            }
-        } else {
-            exitCounter++;
-            if (exitCounter === 4) {
-                break;
-            }
-        }
-        position++;
-    }
-}
+const express = require('express');
 
-const wb = XLSX.utils.book_new();
-wb.SheetNames.push("result");
-const ws = XLSX.utils.aoa_to_sheet(products);
-wb.Sheets["result"] = ws;
-XLSX.writeFile(wb, 'out.xls');
+const conv = require('./Converter');
+
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+const converter = new conv.Converter(__dirname+'/inputOutput');
+
+app.use(express.static(__dirname + '/wwwroot'));
+
+app.get('/start', (req, res) => {
+    converter.startTimer();
+    res.send({result:'start'});
+});
+
+app.get('/stop', (req, res) => {
+    converter.stopTimer();
+    res.send({result:'stop'});
+});
+
+
+app.listen(port, () => {
+    console.log('Started op port 3000');
+});
