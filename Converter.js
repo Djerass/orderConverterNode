@@ -3,7 +3,6 @@ const XLSX = require('xlsx');
 class Converter {
     constructor(folder) {
         this.folder = folder;
-        this.orders = [];
         this._interval;
     }
     changeFolder(newFolder) {
@@ -81,7 +80,7 @@ class Converter {
 
     _convert(file) {
         const workbook = XLSX.readFile(this.folder + '/' + file);
-        const products = [];
+        let products = [];
         for (let sheetName of workbook.SheetNames) {
             // Define start position = 20 and exitCounter = 0
             // Start iterations
@@ -92,36 +91,43 @@ class Converter {
             // if cell of article is not empty - exitCounter become 0
             // if cell of number is empty move to next row else save
             const sheet = workbook.Sheets[sheetName];
-            let position = 20;
-            let exitCounter = 0;
-            while (true) {
-                const articleCell = sheet[`B${position}`];
-                const nameCell = sheet[`A${position}`];
-                const numberCell = sheet[`E${position}`];
-                if (articleCell) {
-                    exitCounter = 0;
-                    if (numberCell) {
-                        const object = [
-                            nameCell.v,
-                            articleCell.v,
-                            '',
-                            '',
-                            numberCell.v
-                        ];
-                        products.push(object);
-                    }
-                } else {
-                    exitCounter++;
-                    if (exitCounter === 4) {
-                        break;
-                    }
-                }
-                position++;
-            }
+            const sheetProduct = this._get_data(sheet);
+            products = products.concat(sheetProduct);
         }
 
         this.write_file(file, products);
 
+    }
+
+    _get_data(sheet){
+        const resultData = [];
+        let position = 20;
+        let exitCounter = 0;
+        while (true) {
+            const articleCell = sheet[`B${position}`];
+            const nameCell = sheet[`A${position}`];
+            const numberCell = sheet[`E${position}`];
+            if (articleCell) {
+                exitCounter = 0;
+                if (numberCell) {
+                    const object = [
+                        nameCell.v,
+                        articleCell.v,
+                        '',
+                        '',
+                        numberCell.v
+                    ];
+                    resultData.push(object);
+                }
+            } else {
+                exitCounter++;
+                if (exitCounter === 4) {
+                    break;
+                }
+            }
+            position++;
+        }
+        return resultData;
     }
 
     
