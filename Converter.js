@@ -12,7 +12,11 @@ class Converter {
     _start() {
         this.getListOfFiles().then((files) => {
                 return this._getFilesToConvert(files);
-            }).then((files) => {
+            })
+            .then((files)=>{
+                return this._rename_files(files);
+            })
+            .then((files) => {
                 for (let file of files) {
                     try {
                         this._convert(file);
@@ -42,9 +46,11 @@ class Converter {
             const filesToConvert = [];
             for (let file of allFiles) {
                 if (this._needToConvert(file, allFiles)) {
+                    console.log(this.folder+'/'+file);
                     filesToConvert.push(file);
                 }
             }
+            console.log(filesToConvert);
             resolve(filesToConvert);
         });
 
@@ -77,7 +83,20 @@ class Converter {
         }
         return flag;
     }
-
+    _rename_files(files){
+        return new Promise((resolve, reject) => {
+            const newFiles = files.map((curr)=>{
+                const newFile = curr.replace(' ','_');
+                const oldName = this.folder + '/' + curr;
+                const newName = this.folder + '/' + newFile;
+                fs.rename(oldName, newName, (err)=>{
+                    if(err) throw err;
+                })
+                return newFile;
+            });
+            resolve(newFiles);
+        });
+    }
     _convert(file) {
         const workbook = XLSX.readFile(this.folder + '/' + file);
         let products = [];
