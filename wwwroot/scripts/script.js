@@ -71,12 +71,45 @@ const controller = ((UIController) => {
     const docLinks = {
         linkOnOff: '/onOff',
         linkGetState: '/getState',
-        linkUpdateUrl: '/updateUrl'
+        linkUpdateUrl: '/updateUrl',
+        deleteLink: '/deleteFile',
+        openLink : '/openFile'
     }
 
     let state;
     let MySuperTimer;
-
+    const removeFile = (file) =>{
+        const data = {file};
+        const bodyObj = JSON.stringify(data);
+        fetch(docLinks.deleteLink, {
+            method: "DELETE",
+            body: bodyObj,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((json) => {
+            console.log(json);
+        })
+        .catch();
+    }
+    const openFile = (file) => {
+        const data = {file};
+        const bodyObj = JSON.stringify(data);
+        fetch(docLinks.openLink, {
+            method: "POST",
+            body: bodyObj,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((json) => {
+            console.log(json);
+        })
+        .catch();
+    };
     const getState = () => {
         fetch(docLinks.linkGetState).then((response) => {
             return response.json();
@@ -105,7 +138,18 @@ const controller = ((UIController) => {
             const type = element.dataset.type;
             if (type){
                 const order = element.dataset.order;
-                console.log(type, order);
+                if (type === 'open'){
+                    // send open request
+                    openFile(order);
+                    console.log(type, order);    
+                } else if (type === 'delete') {
+                    //Hide element
+                    UIController.hideElement(element);
+                    // Send delete request
+                    //console.log(type, order);
+                    removeFile(order);
+                }
+                
             }
             
         });
@@ -126,7 +170,7 @@ const controller = ((UIController) => {
                 }).then((json) => {
                     console.log(json);
                 })
-                .catch()
+                .catch();
         });
         getState();
         turnOnTimer(MySuperTimer);

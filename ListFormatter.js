@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+const exec = require('child_process').execFile;
 
 
 class ListFormatter {
@@ -51,6 +51,24 @@ class ListFormatter {
     }
     stopTimer() {
         clearInterval(this.interval);
+    }
+    removeFile(file){
+        fs.unlink(this.folder + '/' + file,(err)=>{
+            if (err){
+                console.log(err);
+            }
+        });
+        fs.unlink(this.folder+'/result'+file,(err)=>{
+            if (err) console.log(err);;
+        });
+    }
+    openFile(file){
+        exec(this.folder + '/'+ file, (err)=>{
+            if (err) console.log(err);
+        });
+        exec(this.folder + '/result'+ file, (err)=>{
+            if (err) console.log(err);
+        });        
     }
     getState() {
         return this.state;

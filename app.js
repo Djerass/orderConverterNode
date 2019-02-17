@@ -38,13 +38,30 @@ app.get('/getState', (req, res) => {
     res.send(state);
 });
 
-app.post('/updateUrl', function (req, res) {
+app.post('/updateUrl',  (req, res) => {
     const path = req.body.path;
     converter.changeFolder(path);
     state.folder = path;
     const message = `Folder swaped to ${path}`;
     console.log(message);
     res.send({ message });   
+});
+
+app.delete('/deleteFile',  (req, res)=>{{
+    const file = req.body.file;
+    console.log(file);
+    listGet.removeFile(file);
+    const message = `File ${file} removed`;
+    console.log(message);
+    res.send({ message });  
+}});
+app.post('/openFile', (req,res)=>{
+    const file = req.body.file;
+    console.log(file);
+    listGet.openFile(file);
+    const message = `File ${file} opened`;
+    console.log(message);
+    res.send({ message });
 });
     
 
