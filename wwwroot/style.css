@@ -1,3 +1,43 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
 .update-btn{
     display: none !important; 
 }
+.order-container {
+    margin-top: 20px;
+    
+}
+.orders {
+    color: black;
+
+}
+.orders > li {
+    width: 100%;
+    list-style-type: none;
+}
+.order > div{
+    position: relative;
+    margin-top: 10px;
+    background-color: #e5e5e5;
+    border: 1px solid black;
+    border-radius: 7px;
+}
+.order > div > p{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.order .btn{
+    position: absolute;
+    top: 30%;
+    right: 10px;
+    display: none;
+}
+.order .btn-primary{
+    right: 100px;
+}
+
+.order:hover .btn{
+    display: block;
+}
+

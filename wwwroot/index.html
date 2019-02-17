@@ -1,33 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="style.css" >
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Work page</title>
 </head>
+
 <body>
     <div class="container">
-    <h1>Order page</h1>
-    <!-- <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h1>Order page</h1>
+        <!-- <div class="alert alert-success alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
         Folder changed
     </div> -->
-    
-    <div class="input-group">
-        <div class="input-group-prepend">
-          <button id="btnStartStop" class="btn btn-success" type="button">Love it</button>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button id="btnStartStop" class="btn btn-success" type="button">Start</button>
+            </div>
+            <input type="text" id="inputForFolder" class="form-control" placeholder="Put a path to a folder with orders here"
+                aria-label="" aria-describedby="basic-addon1">
+            <div id="containerUpdateUrl" class="input-group-append">
+                <button id="btnUpdateUrl" class="btn btn-info" type="button">Change folder</button>
+            </div>
         </div>
-        <input type="text" id="inputForFolder" class="form-control" placeholder="Put a path to a folder with orders here" aria-label="" aria-describedby="basic-addon1">
-        <div id="containerUpdateUrl" class="input-group-append">
-            <button id="btnUpdateUrl" class="btn btn-info" type="button">Change folder</button>
+        <div class="order-container">
+            <ul id="orders" class="orders">
+                <!-- <li class="order">
+                    <div>
+                        <button data-order="Nagorichniu.xls" class="btn btn-primary">Open</button>
+                        <button data-order="Nagorichniu.xls" class="btn btn-danger">Delete</button>
+                        <p class="originOrder"><span>Nagorichniu.xls</span></p>
+                        <p class="resultOrder">resuldNagorichniu.xls</p>
+                    </div>
+                </li>
+                <li class="order">
+                    <div>
+                            <button data-order="Nagorichniu.xls" class="btn btn-primary">Open</button>
+                        <button data-order="Nagorichniu.xls" class="btn btn-danger">Delete</button>
+                        <p class="originOrder"><span>Nagorichniu.xls</span></p>
+                        <p class="resultOrder">resuldNagorichniu.xls</p>
+                    </div>
+                </li> -->
+            </ul>
         </div>
     </div>
-    </div>
-    <script src="script.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
+
 </html>

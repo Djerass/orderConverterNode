@@ -46,7 +46,7 @@ class ListFormatter {
     }
     startTimer() {
         this.interval = setInterval(() => {
-            this._start();
+            this.start();
         }, 1000);
     }
     stopTimer() {
@@ -55,11 +55,17 @@ class ListFormatter {
     getState() {
         return this.state;
     }
+    changeFolder(newFolder){
+        this.folder = newFolder;
+    }
 
 }
 
 
+module.exports = {ListFormatter};
 
-
-const lf = new ListFormatter('/home/azariah/Desktop/xls/inputOutput');
-//lf.start();
+// const lf = new ListFormatter('/home/azariah/Desktop/xls/inputOutput');
+// lf.start();
+// setInterval(()=>{
+//     console.log(lf.getState());
+// }, 5000);
